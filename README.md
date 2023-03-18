@@ -21,9 +21,13 @@ For our Baseline Model, we used `Pipeline` to encode several features and applie
 We used `"side"`, `"league"`, `"dragons"`, `"visionscore"`  as the features in our baseline model.
 
 `"side"` - this is one nominal column. We implement one hot encode that particular column in order to get it to fit in our model.
+
 `"league"` - this is a nominal column, and we one hot encoded this column to 1 and 0 for each league in the game.
+
 `"dragons"` - this is a quantitative column, and it represents the numbers of dragons that each team kill. There will be no change on this column.
+
 `"visionscore"` - this is a quantitative column. It is the score each team on maintaining visions, and we cast no transformation on it.
+
 
 The average score and result of the performance of our trained model on testing data is around 74%, and we believed that although the score seems to be fine, but the model is not good enough, because we solely included four features, but numbers of other features can influence the result of the game in each match. We cannot predict the correct result everytime with limited information. 
 
