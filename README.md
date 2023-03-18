@@ -2,7 +2,13 @@
 
 by Bofu Zou and Zhuoxuan Ju
 
-## Problem Identification
+## Framing the Problem
 
+### Problem Identification
 
 ## Baseline Model
+
+## Final Model
+
+## Fairness Analysis
+
