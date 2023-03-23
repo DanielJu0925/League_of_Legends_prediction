@@ -33,6 +33,7 @@ We fitted the model to the training data that we splitted previously and tested 
 
 We believe the model is not good one. First, the accuracy score of testing data is relatively lower than that of the training data, which indicates that the model has overfitting issue(ability to generalize to unseen data is restricted). Second, we solely included four features, which will limit the model's ability to generate more accurate prediction. Last but not least, the features we selected are not highly correlated with the games' results. For instance, we only include the kills and experience at 10 minute, but the first 10 minute cannot fully represent the game, since the game might last much longer than only 10 minute.
 
+<iframe src="output.png" width=800 height=600 frameBorder=0></iframe>
 
 ## Final Model
 
