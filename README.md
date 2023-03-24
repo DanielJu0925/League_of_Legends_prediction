@@ -1,4 +1,4 @@
-<h1>League_of_Legends_prediction</h1>
+<h1>League of Legends: Prediction of Teams' Result in Tier1 Leagues Measures</h1>
 
 by Bofu Zou and Zhuoxuan Ju
 
@@ -72,7 +72,7 @@ The testing data overall performance of our Final Model is around 0.73. It is a 
 
 There is our confusion matrix for the testing data overall performance:
 
-<iframe src="output2.png" width=800 height=600 frameBorder=0></iframe>
+<iframe src="output1.png" width=800 height=600 frameBorder=0></iframe>
 
 
 ## Fairness Analysis
