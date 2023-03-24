@@ -23,9 +23,9 @@ For our Baseline Model, we used `Pipeline` to encode several features and applie
 
 We used `"side"`, `"league"`, `"killsat10"`, `"xpdiffat10"`  as the features in our baseline model.
 
-`"side"` - this is one nominal column. We implement one hot encode that particular column in order to get it to fit in our model.
+`"side"` - this is one nominal column. We one hot encode that particular column in order to get it to fit in our model.
 
-`"league"` - this is a nominal column, and we one hot encoded this column to 1 and 0 for each league in the game.
+`"league"` - this is a nominal column, and we implement one hot encoding this column to 1 and 0 for each league in the game.
 
 `"killsat10"` - this is a quantitative column, and it represents the numbers of kills for the team at 10 minute. There will be no change on this column.
 
@@ -33,7 +33,7 @@ We used `"side"`, `"league"`, `"killsat10"`, `"xpdiffat10"`  as the features in 
 
 We fitted the model to the training data that we splitted previously and tested the model on both the training set and testing set. The average score of our trained model is around 0.79 on training data and around 0.58 on testing data.
 
-We believe the model is not good one. First, the accuracy score of testing data is relatively lower than that of the training data, which indicates that the model has overfitting issue(ability to generalize to unseen data is restricted). Second, we solely included four features, which will limit the model's ability to generate more accurate prediction. Last but not least, the features we selected are not highly correlated with the games' results. For instance, we only include the kills and experience at 10 minute, but the first 10 minute cannot fully represent the game, since the game might last much longer than only 10 minute.
+We believe the model is not good one. First, the accuracy score of testing data is relatively lower than that of the training data, which indicates that the model has overfitting issue(ability to generalize to unseen data is restricted). Second, we solely included four features, which will limit the model's ability to generate more accurate prediction. Last but not least, the features we selected are not highly correlated with the games' results. For instance, we only include the kills and experience at 10 minute, but the first 10 minute cannot fully represent the game, since the game might last much longer than 20 or 30 mins.
 
 There is the confusion matrix for our testing data result:
 
@@ -42,9 +42,7 @@ There is the confusion matrix for our testing data result:
 
 ## Final Model
 
-In our Final Model, our features are:
-
-`"side"` - this is one nominal column. We implement one hot encode that particular column in order to get it to fit in our model.
+In our Final Model, we add these new features:
 
 `"killsat15"` - this is one quantitative column that record the kills from the team at 15 minutes from the game start.
 
@@ -59,18 +57,18 @@ In our Final Model, our features are:
 `"goldat15"` - this is a quantitative column that the gold the team received in the first 15 minutes.
 
 
-In order to get a better model, we delete the feature `"league"`, because the different leagues that the games are in is not a variable that will affect our result. For example, the game content will be the same for the match in LPL and LCK. Also, we changed the features `"killsat10"` and `"xpdiffat10"` to `"killsat15"` and `"xpdiffat15"`, because we want to get higher accuracy for the prediction, and we believe the datas that are collected at the first 15 minutes can give our model more information on the game's trend, and thus the model will work better on predict the game result.
+In order to get a better model, we delete the feature `"league"`, because the different leagues that the games are in is not a variable that will affect our result. For example, the game content will be the same for the match in LPL and LCK. Also, we changed the features `"killsat10"` and `"xpdiffat10"` to `"killsat15"` and `"xpdiffat15"`, because we want to get higher accuracy for the prediction, and we believe the datas that are collected at the first 15 minutes can give our model more information on the game's trend than at 10 minutes, and thus the model will work better with these two new features on predicting the game result.
 
-We added more features. Firstly `"opp_killsat15"`, as the description above, it records the kills from the opposite team at the first 15 minutes. We believe this column can generate and represent the strength of the oppsite team. With that information, we can somewhat increase the complexity of the model. However it will not cause overfitting for our model because the match is more complicated than just determined by kills.
+We added more features. Firstly `"opp_killsat15"`, as the description above, it records the kills from the opposite team at the first 15 minutes. We can compute the kill difference at 15 min with `"killat15"` feature. The kill difference feature can represent the team's combat status and give us a brief conclusion of this team's winning trend aginst the opposite. With that information, we can somewhat increase the complexity of the model without causing overfitting for our model because the match is more complicated than just determined by kills.
 
-Secondly `"golddiffat15"` and `"goldat15"`, `"golddiffat15"` represents the difference in the amount of gold received in game for both team in the first 15 minutes. `"goldat15"` shows the gold the team gain. In the game, gold is used for purchasing powerful items to strengthen their power. The higher amount of gold, the stronger the players will be. So with this information, the model can include more variables for predict the result of the game. 
+Secondly, `"golddiffat15"` represents the difference in the amount of gold received in game for both team in the first 15 minutes. `"goldat15"` shows the gold the team gain. In the game, gold is used for purchasing powerful items to strengthen their power. The higher amount of gold, the stronger the players will be. The economy gap, represented by `"golddiffat15"`, can also indicate if the team has an advantage at 15 mins. So with this information, the model can include more variables for predict the result of the game. 
 
-Lastly `"csdiffat15"`, this feature represents the numbers of soldiers that the team kills in the first 15 minutes. If this features is high, it can represent this team have more advantages that their opponent, since they have a higher priority in the lane. This will add more chance to win for this team. Thus, we consider it as one of our feature.
+Lastly `"csdiffat15"`, this feature represents the numbers of soldiers that the team kills in the first 15 minutes. If this features is high, it can represent this team have potentially higher advantages than their opponent, since they have a higher priority in the lane and more gold earned. This will add more chance to win for this team. Thus, we consider it as one of our feature.
 
 
-For our model, we chose `DecisionTreeClassifier()` as our prediction model, and we will return in a binary result. Inside our model, we split the data into training and testing model and construct the `ColumnTransformer()`. Specifically, we one hot encoded the `"side"`, and using `Binarizer()` for both `"golddiffat15"` and `"xpdiffat15"`. Applying `StandardScaler()` on the `"goldat15"` can standardize the data. Later on, we form a `FunctionTransformer()` which calculates the difference in kills for the team and their opponent team. After that, we used Cross Validation to find the best paramters for the `ColumnTransformer()`. In the next step, we apply one `GridSearchCV()` in order to find the best paramters for `DecisionTreeClassifier()` in our model. Later on, we contruct a Pipeline to train our data. 
+For our model, we chose `DecisionTreeClassifier()` as our prediction model, and we will return in a binary result. Inside our model, we split the data into training and testing model and construct the `ColumnTransformer()`. Specifically, we one hot encoded the `"side"`, and using `Binarizer()` with different thresholds (using cross validation to find the most appropriate threshold combos) to binarize both `"golddiffat15"` and `"xpdiffat15"`. Applying `StandardScaler()` on the `"goldat15"` which can standardize the feature. Later on, we form a `FunctionTransformer()` which calculates the kill difference between two teams at 15min. In the next step, we apply one `GridSearchCV()` in order to find the best paramters for `DecisionTreeClassifier()` in our model. Later on, we contruct a Pipeline to train our data. 
 
-The testing data overall performance of our Final Model is around 0.73. It is a huge inprovement comparing to our Baseline Model's score 0.58. Specifically, we include more features inside our Final Model, and the precision of our model is higher than the Baseline Model, since we contain only the datas that collecte from the first 15 minutes. This highly increase the complexity for our model. In addition, the training data's overall performance is around 0.76. This shows that our model does not occur overfitting condition. 
+The testing data overall performance of our Final Model is around 0.73. It is a huge inprovement comparing to our Baseline Model's score (0.58). Specifically, we include more features inside our Final Model, and the precision of our model is higher than the Baseline Model, since we contain only the datas that collecte from the first 15 minutes. This increase the complexity in a certain level for our model, which can better analyze the trend of the team during the game while not overfit to the training data. In addition, the training data's overall performance is around 0.76. This shows that our model does not occur overfitting condition since the prediction score on training and testing data only has a difference of 0.03
 
 There is our confusion matrix for the testing data overall performance:
 
@@ -78,4 +76,10 @@ There is our confusion matrix for the testing data overall performance:
 
 
 ## Fairness Analysis
+We split the data into groups - Group X, also called as short-games group, are games that last shorter than the 30 mins, which is around the 50% quartile. Group Y, also called a slong-games group, are games that last longer or equal to 30 mins. We weant to see if the precision score (the selected evaluation metric) of one group (shorter-games) is higher than the other (longer-games), in other words, if our final model perform worse in teams in long games than it does in teams in short games.
 
+After computing the precision, recall and accuracy scores on these two groups using final model, we find out that they give almost the same scores on two groups. Since precision score has the largest gap, we choose it as our evaluation metric.
+
+Our null hypothesis is that our model is fair. Its precision for long-game group and short-game group are roughly the same, and any differences are due to random chance. Our alternative hypothesis is that our model is unfair. Its precision for long-game group is lower than its precision for short-game group.
+
+We choose 0.05 as our significance level. After predicting two groups' precision scores during permutation and comparing the experiment statistics with the observed statistic, the p-value is 0.0, which is below the significance level of 5%. Thus, we rejecet the null hypothesis. It has a great probability that the gap between two groups' precision scores are not due to random chance.
