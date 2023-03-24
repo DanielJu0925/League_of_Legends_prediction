@@ -39,8 +39,8 @@ There is the confusion matrix for our testing data result:
 
 <iframe src="output.png" width=800 height=600 frameBorder=0></iframe>
 
-## Final Model
 
+## Final Model
 
 In our Final Model, our features are:
 
@@ -70,16 +70,11 @@ Lastly `"csdiffat15"`, this feature represents the numbers of soldiers that the 
 
 For our model, we chose `DecisionTreeClassifier()` as our prediction model, and we will return in a binary result. Inside our model, we split the data into training and testing model and construct the `ColumnTransformer()`. Specifically, we one hot encoded the `"side"`, and using `Binarizer()` for both `"golddiffat15"` and `"xpdiffat15"`. Applying `StandardScaler()` on the `"goldat15"` can standardize the data. Later on, we form a `FunctionTransformer()` which calculates the difference in kills for the team and their opponent team. After that, we used Cross Validation to find the best paramters for the `ColumnTransformer()`. In the next step, we apply one `GridSearchCV()` in order to find the best paramters for `DecisionTreeClassifier()` in our model. Later on, we contruct a Pipeline to train our data. 
 
-The testing data overall performance of our Final Model is around 0.73. It is a huge inprovement comparing to our Baseline Model. Specifically, we include more features inside our Final Model, and the precision of our model is higher than the Baseline Model, since we contain only the datas that collecte from the first 15 minutes. This highly increase the complexity for our model. In addition, the training data's overall performance is around 0.76. This shows that our model does not occur overfitting condition. 
+The testing data overall performance of our Final Model is around 0.73. It is a huge inprovement comparing to our Baseline Model's score 0.58. Specifically, we include more features inside our Final Model, and the precision of our model is higher than the Baseline Model, since we contain only the datas that collecte from the first 15 minutes. This highly increase the complexity for our model. In addition, the training data's overall performance is around 0.76. This shows that our model does not occur overfitting condition. 
 
 There is our confusion matrix for the testing data overall performance:
 
 <iframe src="output2.png" width=800 height=600 frameBorder=0></iframe>
-
-
-### Testing Model
-
-We created one testing model to try out different combinations, and the testing data accuracy of our model is only about 0.65. The features that we included are `"side"`, `"league"`, `"killsat10"`, `"xpdiffat10"`, `"opp_killsat15"`, `"goldat10"`. We believe the reason of such low accuracy is because we include some not comprehensive features inside the model. For example, we included `"killsat10"`, `"xpdiffat10"`, `"goldat10"`. We originally considered that those data are important for the development of the game. Specifically, the gold that each team earned can help them purchase powerful items which can increase their demage to other players. They are all the data that being collected at the first 10 minutes of the game. As we mentioned above, each game can last more than 10 minutes and even 1 hour. Therefore, we think this model is not good enough to predict the result correctly.
 
 
 ## Fairness Analysis
