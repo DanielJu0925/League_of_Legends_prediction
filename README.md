@@ -2,7 +2,7 @@
 
 by Bofu Zou and Zhuoxuan Ju
 
-Our exploratory data analysis on this dataset can be found: <a href=https://danielju0925.github.io/Investigation-on-League-of-Legends/>
+Our exploratory data analysis on this dataset can be found: <a href="https://danielju0925.github.io/Investigation-on-League-of-Legends/">here</a>
 
 ## Framing the Problem
 
