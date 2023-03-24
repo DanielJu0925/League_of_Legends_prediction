@@ -1,4 +1,4 @@
-<h1>League of Legends: Prediction of Teams' Result in Tier1 Leagues Measures</h1>
+<h1>League of Legends: Prediction of Teams' Result in Tier1 Leagues Matches</h1>
 
 by Bofu Zou and Zhuoxuan Ju
 
